@@ -6,7 +6,7 @@
 
 #ifndef STRING_FUNCTIONS_H
 #define STRING_FUNCTIONS_H
-//TODO:strstr optimization, unit-tests, mainpage
+//TODO:strstr optimization, unit-tests, mainpage, readme.
 #include <stddef.h>
 
 /**
