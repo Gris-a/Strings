@@ -6,7 +6,7 @@
 
 #ifndef STRING_FUNCTIONS_H
 #define STRING_FUNCTIONS_H
-//TODO:unit-tests, mainpage, readme, documentation.
+
 #include <stddef.h>
 
 /**
@@ -101,16 +101,52 @@ char *my_strchr(char str[], const char ch);
 */
 char *my_strrchr(char str[], const char ch);
 
+/**
+ * @brief
+ * @param str
+ * @return
+*/
 char *my_strdup(const char str[]);
 
+/**
+ * @brief
+ * @param str
+ * @param n_chars
+ * @return
+*/
 char *my_strndup(const char str[], const size_t n_chars);
 
-void my_fputs(const char str[], FILE *file);
+/**
+ * @brief
+ * @param str String.
+ * @param file File.
+ * @return @b true if successful.
+*/
+int my_fputs(const char str[], FILE *file);
 
-void my_puts(const char str[]);
+/**
+ * @brief
+ * @param str String.
+ * @return @b true if successful.
+*/
+int my_puts(const char str[]);
 
+/**
+ * @brief
+ * @param str
+ * @param n_chars
+ * @param file
+ * @return
+*/
 char *my_fgets(char str[], size_t n_chars, FILE *file);
 
+/**
+ * @brief
+ * @param lineptr
+ * @param size
+ * @param file
+ * @return
+*/
 ssize_t my_getline(char **lineptr, size_t *size, FILE *file);
 
 #endif //STRING_FUNCTIONS_H

@@ -1,6 +1,6 @@
+#include <assert.h>
 #include <math.h>
 #include <stdio.h>
-#include <string.h>
 #include <stdlib.h>
 
 #include "../include/string_functions.h"
@@ -11,8 +11,13 @@
  * @brief Main .cpp file.
 */
 
+//TODO:unit-tests, mainpage, readme, documentation.
+
 int main(void)
 {
-    FILE *file = fopen("file.txt", "a");
-    fputs("aboba", file);
+    char *ptr = NULL;
+    size_t size = 0;
+    printf(getline(&ptr, &size, stdin);
+    printf("%d\n", size);
+    return 0;
 }
