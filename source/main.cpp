@@ -16,8 +16,8 @@
 int main(void)
 {
     char *ptr = NULL;
-    size_t size = 0;
-    printf(getline(&ptr, &size, stdin);
-    printf("%d\n", size);
+    size_t size = 500;
+    printf("%zd\n", getline(&ptr, &size, stdin));
+    printf("%zu\n", size);
     return 0;
 }

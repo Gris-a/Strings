@@ -122,14 +122,14 @@ char *my_strndup(const char str[], const size_t n_chars);
  * @param file File.
  * @return @b true if successful.
 */
-int my_fputs(const char str[], FILE *file);
+bool my_fputs(const char str[], FILE *file);
 
 /**
  * @brief
  * @param str String.
  * @return @b true if successful.
 */
-int my_puts(const char str[]);
+bool my_puts(const char str[]);
 
 /**
  * @brief
@@ -148,5 +148,7 @@ char *my_fgets(char str[], size_t n_chars, FILE *file);
  * @return
 */
 ssize_t my_getline(char **lineptr, size_t *size, FILE *file);
+
+char *my_strstr(char str[], const char substr[]);
 
 #endif //STRING_FUNCTIONS_H

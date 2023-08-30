@@ -226,7 +226,7 @@ char *my_strndup(const char str[], const size_t n_chars)
     return str_copy;
 }
 
-int my_fputs(const char str[], FILE *file)
+bool my_fputs(const char str[], FILE *file)
 {
     assert(str  != NULL);
     assert(file != NULL);
@@ -236,7 +236,7 @@ int my_fputs(const char str[], FILE *file)
     return (fwrite(str, sizeof(char), len, file) == len);
 }
 
-int my_puts(const char str[])
+bool my_puts(const char str[])
 {
     assert(str != NULL);
 
@@ -286,9 +286,12 @@ char *my_fgets(char str[], size_t n_chars, FILE *file)
 ssize_t my_getline(char **lineptr, size_t *size, FILE *file)
 {
     assert(lineptr  != NULL);
-    assert(*lineptr != NULL); // cppref realloc(nullptr) -???
     assert(size     != NULL);
     assert(file     != NULL);
+    if(*lineptr == NULL)
+    {
+        *lineptr = (char *)malloc(*size = 120);
+    }
 
     char ch  = 0;
     size_t i = 0;
@@ -327,8 +330,33 @@ ssize_t my_getline(char **lineptr, size_t *size, FILE *file)
     return (ssize_t)i;
 }
 
+char *my_strstr(char str[], const char substr[]) //unit tests
+{
+    assert(str != NULL);
+    assert(substr != NULL);
 
+    size_t substr_len = my_strlen(substr);
+    if(substr_len == 0)
+    {
+        return str;
+    }
+    if(substr_len > my_strlen(str))
+    {
+        return NULL;
+    }
+    char substr_first = substr[0];
+    while(*str != '\0')
+    {
+        if(*str == substr_first)
+        {
+            if(!my_strncmp(str, substr, substr_len))
+            {
+                return str;
+            }
+        }
+        str++;
+    }
+    return NULL;
+}
 
-//my getc, putc, getchar, putchar
-// strstr
-// unit
+// my getc, putc, getchar, putchar
