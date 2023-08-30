@@ -6,7 +6,7 @@
 
 #ifndef STRING_FUNCTIONS_H
 #define STRING_FUNCTIONS_H
-//TODO:strstr optimization, unit-tests, mainpage, readme.
+//TODO:unit-tests, mainpage, readme, documentation.
 #include <stddef.h>
 
 /**
@@ -101,12 +101,16 @@ char *my_strchr(char str[], const char ch);
 */
 char *my_strrchr(char str[], const char ch);
 
-/**
- * @brief My strstr, finds first occurence of @b substr in @b str.
- * @param str String to be viewed.
- * @param substr Substring to search for.
- * @return Pointer to the first occurrence of @b substr in @b str, @b NULL if there is no @b substr in @b str.
-*/
-char *my_strstr(char str[], const char substr[]);
+char *my_strdup(const char str[]);
+
+char *my_strndup(const char str[], const size_t n_chars);
+
+void my_fputs(const char str[], FILE *file);
+
+void my_puts(const char str[]);
+
+char *my_fgets(char str[], size_t n_chars, FILE *file);
+
+ssize_t my_getline(char **lineptr, size_t *size, FILE *file);
 
 #endif //STRING_FUNCTIONS_H
