@@ -7,6 +7,7 @@
 #ifndef STRING_FUNCTIONS_H
 #define STRING_FUNCTIONS_H
 
+#include <stdbool.h>
 #include <stddef.h>
 
 /**

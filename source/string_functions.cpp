@@ -1,4 +1,5 @@
 #include <assert.h>
+#include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -243,8 +244,8 @@ bool my_puts(const char str[])
     size_t len   = my_strlen(str) + 1;
     size_t count = 0;
 
-    count += fwrite(str  , sizeof(char), len, stdout);
-    count += fwrite(&"\n", sizeof(char), 1  , stdout);
+    count += fwrite(str, sizeof(char), len, stdout);
+    count += (fputc('\n', stdout) != EOF);
 
     return (count == len);
 }
@@ -259,7 +260,7 @@ char *my_fgets(char str[], size_t n_chars, FILE *file)
 
     while(--n_chars > 0)
     {
-        if(!fread(&ch, sizeof(char), 1, file))
+        if((ch = getc(file)) == EOF)
         {
             if(i == 0)
             {
@@ -290,13 +291,13 @@ ssize_t my_getline(char **lineptr, size_t *size, FILE *file)
     assert(file     != NULL);
     if(*lineptr == NULL)
     {
-        *lineptr = (char *)malloc(*size = 120);
+        *lineptr = (char *)calloc(*size = 120, sizeof(char));
     }
 
-    char ch  = 0;
+    int ch  = 0;
     size_t i = 0;
 
-    while(fread(&ch, sizeof(char), 1, file))
+    while((ch = getc(file)) != EOF)
     {
         if(i + 2 > *size)
         {
@@ -317,7 +318,7 @@ ssize_t my_getline(char **lineptr, size_t *size, FILE *file)
             break;
         }
 
-        (*lineptr)[i++] = ch;
+        (*lineptr)[i++] = (char)ch;
     }
 
     if(i == 0)
@@ -332,7 +333,7 @@ ssize_t my_getline(char **lineptr, size_t *size, FILE *file)
 
 char *my_strstr(char str[], const char substr[]) //unit tests
 {
-    assert(str != NULL);
+    assert(str    != NULL);
     assert(substr != NULL);
 
     size_t substr_len = my_strlen(substr);
@@ -340,11 +341,14 @@ char *my_strstr(char str[], const char substr[]) //unit tests
     {
         return str;
     }
+
     if(substr_len > my_strlen(str))
     {
         return NULL;
     }
+
     char substr_first = substr[0];
+
     while(*str != '\0')
     {
         if(*str == substr_first)
@@ -356,7 +360,6 @@ char *my_strstr(char str[], const char substr[]) //unit tests
         }
         str++;
     }
+
     return NULL;
 }
-
-// my getc, putc, getchar, putchar
