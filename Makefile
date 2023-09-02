@@ -9,8 +9,8 @@ all: obj $(PROGRAM_NAME)
 obj:
 	@mkdir obj
 
-$(PROGRAM_NAME): $(OBJ_DIR)/main.o $(OBJ_DIR)/string_functions.o
-	@g++ $(CFLAGS) $(OBJ_DIR)/main.o $(OBJ_DIR)/string_functions.o  -o $(PROGRAM_NAME)
+$(PROGRAM_NAME): $(OBJ_DIR)/main.o $(OBJ_DIR)/string_functions.o $(OBJ_DIR)/hash_functions.o
+	@g++ $(CFLAGS) $(OBJ_DIR)/main.o $(OBJ_DIR)/string_functions.o $(OBJ_DIR)/hash_functions.o -o $(PROGRAM_NAME)
 	@echo "Linking object files into $(PROGRAM_NAME)"
 
 $(OBJ_DIR)/main.o: $(SOURCE_DIR)/main.cpp $(INCLUDE_DIR)/string_functions.h
@@ -20,3 +20,7 @@ $(OBJ_DIR)/main.o: $(SOURCE_DIR)/main.cpp $(INCLUDE_DIR)/string_functions.h
 $(OBJ_DIR)/string_functions.o: $(SOURCE_DIR)/string_functions.cpp $(INCLUDE_DIR)/string_functions.h
 	@g++ $(CFLAGS) -c $(SOURCE_DIR)/string_functions.cpp -o $(OBJ_DIR)/string_functions.o
 	@echo "Compiling main.cpp"
+
+$(OBJ_DIR)/hash_functions.o: $(SOURCE_DIR)/hash_functions.cpp $(INCLUDE_DIR)/hash_functions.h
+	@g++ $(CFLAGS) -c $(SOURCE_DIR)/hash_functions.cpp -o $(OBJ_DIR)/hash_functions.o
+	@echo "Compiling hash_functions.cpp"

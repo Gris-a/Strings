@@ -5,11 +5,7 @@
 
 #include "../include/string_functions.h"
 
-/**
- * @file string_functions.cpp
- * @author Gris-a.
- * @brief My string functions.
-*/
+#include "../include/hash_functions.h"
 
 size_t my_strlen(const char str[])
 {
@@ -105,38 +101,38 @@ char *my_strncpy(char dest[], const char src[], size_t n_chars)
     return dest;
 }
 
-char *my_strcat(char str[], const char add_str[])
+char *my_strcat(char str[], const char src[])
 {
     assert(str     != NULL);
-    assert(add_str != NULL);
+    assert(src != NULL);
 
     while(*(str) != '\0')
     {
         str++;
     }
 
-    while(*(add_str) != '\0')
+    while(*(src) != '\0')
     {
-        *(str++) = *(add_str++);
+        *(str++) = *(src++);
     }
     *str = '\0';
 
     return str;
 }
 
-char *my_strncat(char str[], const char add_str[], size_t n_chars)
+char *my_strncat(char str[], const char src[], size_t n_chars)
 {
     assert(str     != NULL);
-    assert(add_str != NULL);
+    assert(src != NULL);
 
     while(*(str) != '\0')
     {
         str++;
     }
 
-    while(*(add_str) != '\0' && n_chars-- > 0)
+    while(*(src) != '\0' && n_chars-- > 0)
     {
-        *(str++) = *(add_str++);
+        *(str++) = *(src++);
     }
     *str = '\0';
 
@@ -289,6 +285,7 @@ ssize_t my_getline(char **lineptr, size_t *size, FILE *file)
     assert(lineptr  != NULL);
     assert(size     != NULL);
     assert(file     != NULL);
+    assert(lineptr  != NULL);
     if(*lineptr == NULL)
     {
         *lineptr = (char *)calloc(*size = 120, sizeof(char));
@@ -331,7 +328,7 @@ ssize_t my_getline(char **lineptr, size_t *size, FILE *file)
     return (ssize_t)i;
 }
 
-char *my_strstr(char str[], const char substr[]) //unit tests
+char *my_strstr(char str[], const char substr[])
 {
     assert(str    != NULL);
     assert(substr != NULL);
@@ -342,23 +339,34 @@ char *my_strstr(char str[], const char substr[]) //unit tests
         return str;
     }
 
-    if(substr_len > my_strlen(str))
+    size_t strlen = my_strlen(str);
+    if(strlen < substr_len)
     {
         return NULL;
     }
 
-    char substr_first = substr[0];
+    size_t n_substr_possible = strlen - substr_len;
 
-    while(*str != '\0')
+    size_t substr_hash = 0;
+    size_t str_substr_hash = 0;
+
+    size_t powered_P = poly_hash(substr, substr_len, &substr_hash);
+    poly_hash(str, substr_len, &str_substr_hash);
+
+    while(true)
     {
-        if(*str == substr_first)
+        if(substr_hash == str_substr_hash && !my_strncmp(substr, str, substr_len))
         {
-            if(!my_strncmp(str, substr, substr_len))
-            {
-                return str;
-            }
+            return str;
         }
-        str++;
+
+        if(n_substr_possible == 0)
+        {
+            return NULL;
+        }
+
+        str_substr_hash = poly_hash_next(++str, str_substr_hash, substr_len, powered_P);
+        n_substr_possible--;
     }
 
     return NULL;
