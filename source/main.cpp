@@ -5,6 +5,6 @@
 
 int main(void)
 {
-    printf("%c", 128);
+
     return 0;
 }
