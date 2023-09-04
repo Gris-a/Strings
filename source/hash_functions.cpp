@@ -3,29 +3,28 @@
 
 #include "../include/hash_functions.h"
 
-size_t poly_hash(const char str[], const size_t str_len, size_t *const hash)
+void poly_hash(const char str[], size_t hashed_str_len, struct Hash *const hash)
 {
-    assert(str != NULL);
+    assert(str  != NULL);
     assert(hash != NULL);
 
-    *hash = 0;
-    size_t i = 0;
-    size_t powered_P = 1;
+    hash->hash_value = 0;
+    hash->powered_P = 1;
+    hash->str_len = 0;
 
-    while(i != str_len - 1)
+    while(hash->str_len != hashed_str_len - 1)
     {
-        *hash += (size_t)str[i++] * powered_P;
-        powered_P *= P;
+        hash->hash_value += (size_t)str[hash->str_len++] * hash->powered_P;
+        hash->powered_P *= P;
     }
 
-    *hash += (size_t)str[i] * powered_P;
-
-    return powered_P;
+    hash->hash_value += (size_t)str[hash->str_len++] * hash->powered_P;
 }
 
-size_t poly_hash_next(const char *const substr_begin, const size_t hash, const size_t substr_len, const size_t powered_P)
+void poly_hash_next(const char *const substr_begin, struct Hash *const hash)
 {
     assert(substr_begin != NULL);
+    assert(hash != NULL);
 
-    return (hash - (size_t)substr_begin[-1]) / P + powered_P * (size_t)substr_begin[substr_len - 1];
+    hash->hash_value = (hash->hash_value - (size_t)substr_begin[-1]) / P + hash->powered_P * (size_t)substr_begin[hash->str_len - 1];
 }

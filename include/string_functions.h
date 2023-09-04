@@ -16,9 +16,9 @@ char *my_strcpy(char dest[], const char src[]);
 
 char *my_strncpy(char dest[], const char src[], size_t n_chars);
 
-char *my_strcat(char str[], const char add_str[]);
+char *my_strcat(char dest[], const char src[]);
 
-char *my_strncat(char str[], const char add_str[], size_t n_chars);
+char *my_strncat(char dest[], const char src[], size_t n_chars);
 
 char *my_strchr(char str[], const char ch);
 

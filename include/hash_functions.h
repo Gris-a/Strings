@@ -3,11 +3,18 @@
 
 #include <stddef.h>
 
+struct Hash
+{
+    size_t str_len;
+    size_t hash_value;
+    size_t powered_P;
+};
+
 const size_t P = 257;
 
-size_t poly_hash(const char str[], const size_t str_len, size_t *const hash);
+void poly_hash(const char str[], size_t str_len, struct Hash *const hash);
 
-size_t poly_hash_next(const char *const sub_str_begin, const size_t hash, const size_t substr_len, const size_t powered_P);
+void poly_hash_next(const char *const sub_str_begin, struct Hash *const hash);
 
 
 #endif //HASH_FUNCTIONS_H

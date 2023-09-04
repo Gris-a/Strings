@@ -1,4 +1,5 @@
 #include <assert.h>
+#include <math.h>
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -46,7 +47,7 @@ int my_strcmp(const char str1[], const char str2[])
         str2++;
     }
 
-    return *str1 - *str2;
+    return (*str1 - *str2 != 0) ? (*str1 - *str2) / abs(*str1 - *str2) : 0;
 }
 
 int my_strncmp(const char str1[], const char str2[], size_t n_chars)
@@ -60,7 +61,7 @@ int my_strncmp(const char str1[], const char str2[], size_t n_chars)
         str2++;
     }
 
-    return *str1 - *str2;
+    return (*str1 - *str2 != 0) ? (*str1 - *str2) / abs(*str1 - *str2) : 0;
 }
 
 char *my_strcpy(char dest[], const char src[])
@@ -101,42 +102,42 @@ char *my_strncpy(char dest[], const char src[], size_t n_chars)
     return dest;
 }
 
-char *my_strcat(char str[], const char src[])
+char *my_strcat(char dest[], const char src[])
 {
-    assert(str     != NULL);
+    assert(dest     != NULL);
     assert(src != NULL);
 
-    while(*(str) != '\0')
+    while(*(dest) != '\0')
     {
-        str++;
+        dest++;
     }
 
     while(*(src) != '\0')
     {
-        *(str++) = *(src++);
+        *(dest++) = *(src++);
     }
-    *str = '\0';
+    *dest = '\0';
 
-    return str;
+    return dest;
 }
 
-char *my_strncat(char str[], const char src[], size_t n_chars)
+char *my_strncat(char dest[], const char src[], size_t n_chars)
 {
-    assert(str     != NULL);
+    assert(dest     != NULL);
     assert(src != NULL);
 
-    while(*(str) != '\0')
+    while(*(dest) != '\0')
     {
-        str++;
+        dest++;
     }
 
     while(*(src) != '\0' && n_chars-- > 0)
     {
-        *(str++) = *(src++);
+        *(dest++) = *(src++);
     }
-    *str = '\0';
+    *dest = '\0';
 
-    return str;
+    return dest;
 }
 
 char *my_strchr(char str[], const char ch)
@@ -294,7 +295,7 @@ ssize_t my_getline(char **lineptr, size_t *size, FILE *file)
     int ch  = 0;
     size_t i = 0;
 
-    while((ch = getc(file)) != EOF)
+    while((ch = fgetc(file)) != EOF)
     {
         if(i + 2 > *size)
         {
@@ -347,15 +348,15 @@ char *my_strstr(char str[], const char substr[])
 
     size_t n_substr_possible = strlen - substr_len;
 
-    size_t substr_hash = 0;
-    size_t str_substr_hash = 0;
+    struct Hash substr_hash = {0, 0, 0};
+    struct Hash str_substr_hash = {0, 0, 0};
 
-    size_t powered_P = poly_hash(substr, substr_len, &substr_hash);
+    poly_hash(substr, substr_len, &substr_hash);
     poly_hash(str, substr_len, &str_substr_hash);
 
     while(true)
     {
-        if(substr_hash == str_substr_hash && !my_strncmp(substr, str, substr_len))
+        if(substr_hash.hash_value == str_substr_hash.hash_value && !my_strncmp(substr, str, substr_len))
         {
             return str;
         }
@@ -365,7 +366,7 @@ char *my_strstr(char str[], const char substr[])
             return NULL;
         }
 
-        str_substr_hash = poly_hash_next(++str, str_substr_hash, substr_len, powered_P);
+        poly_hash_next(++str, &str_substr_hash);
         n_substr_possible--;
     }
 
